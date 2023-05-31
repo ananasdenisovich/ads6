@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MyGraph<Vertex> {
     private Map<Vertex, List<Vertex>> list;
@@ -72,8 +69,6 @@ public class MyGraph<Vertex> {
         DFSHelper(start, visited);
 
     }
-
-
     private void DFSHelper(Vertex vertex, Map<Vertex, Boolean> visited) {
         visited.put(vertex, true);
         System.out.print(vertex + " ");
@@ -83,4 +78,53 @@ public class MyGraph<Vertex> {
             }
         }
     }
+    public void BFS(Vertex start) {
+        validateVertex(start);
+
+        Map<Vertex, Boolean> visited = new HashMap<>();
+        for (Vertex vertex : list.keySet()) {
+            visited.put(vertex, false);
+        }
+
+        Queue<Vertex> queue = new LinkedList<>();
+        visited.put(start, true);
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            Vertex currentVertex = queue.poll();
+            System.out.print(currentVertex + " ");
+
+            for (Vertex neighbor : list.get(currentVertex)) {
+                if (!visited.get(neighbor)) {
+                    visited.put(neighbor, true);
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+    public void search(Vertex start, Vertex destination) {
+        Set<Vertex> visited = new HashSet<>();
+        Queue<Vertex> queue = new LinkedList<>();
+
+        visited.add(start);
+        queue.add(start);
+        Vertex found = null;
+        while (!queue.isEmpty()) {
+            Vertex current = queue.poll();
+            if (current.equals(destination)) {
+                found = current;
+            }
+            List<Vertex> neighbors = list.getOrDefault(current, Collections.emptyList());
+            for (Vertex neighbor : neighbors) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    queue.add(neighbor);
+                }
+            }
+        }
+        System.out.println(found + "found");
+
+
+    }
+
 }

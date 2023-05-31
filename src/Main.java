@@ -15,6 +15,7 @@ public class Main {
         System.out.println(temp.hasEdge(1,3));
         System.out.println(temp.hasEdge(1,2));
         System.out.println(temp.getNeighbors(1));
-        temp.DFS(1);
+
+        temp.search(1, 3);
     }
 }
