@@ -122,9 +122,41 @@ public class MyGraph<Vertex> {
                 }
             }
         }
-        System.out.println(found + "found");
+        System.out.println(found + " found");
+    }
+    public Map<Vertex, Double> dijkstra(Vertex start) {
+        Map<Vertex, Double> distances = new HashMap<>();
+        for (Vertex node : list.keySet()) {
+            distances.put(node, Double.MAX_VALUE);
+        }
+        distances.put(start, 0d);
 
+        PriorityQueue<Vertex> queue = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
+        queue.add(start);
 
+        while (!queue.isEmpty()) {
+            Vertex currentVertex = queue.poll();
+
+            List<Vertex> neighbors = list.get(currentVertex);
+            if (neighbors == null) {
+                continue;
+            }
+
+            for (Vertex neighbor : neighbors) {
+                Double currentDistance = distances.get(currentVertex);
+                if (currentDistance == null) {
+                    continue;
+                }
+                double distance = currentDistance + 1;
+                Double neighborDistance = distances.get(neighbor);
+                if (neighborDistance == null || distance < neighborDistance) {
+                    distances.put(neighbor, distance);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        return distances;
     }
 
 }

@@ -17,5 +17,7 @@ public class Main {
         System.out.println(temp.getNeighbors(1));
 
         temp.search(1, 3);
+        temp.BFS(1);
+        System.out.println(temp.dijkstra(1));
     }
 }
