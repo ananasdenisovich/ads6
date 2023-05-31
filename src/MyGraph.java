@@ -79,10 +79,10 @@ public class MyGraph<Vertex> {
         }
     }
     public void BFS(Vertex start) {
-        validateVertex(start);
+        validateVertex(start);//checks the vertex
 
         Map<Vertex, Boolean> visited = new HashMap<>();
-        for (Vertex vertex : list.keySet()) {
+        for (Vertex vertex : list.keySet()) { //visits all vertexes in list
             visited.put(vertex, false);
         }
 
@@ -91,16 +91,17 @@ public class MyGraph<Vertex> {
         queue.add(start);
 
         while (!queue.isEmpty()) {
-            Vertex currentVertex = queue.poll();
+            Vertex currentVertex = queue.poll();//poll retrieves and removes start, so that next vertex is start
             System.out.print(currentVertex + " ");
 
-            for (Vertex neighbor : list.get(currentVertex)) {
+            for (Vertex neighbor : list.get(currentVertex)) { //gets vertexes neighbors first(on 1 level)
                 if (!visited.get(neighbor)) {
                     visited.put(neighbor, true);
-                    queue.add(neighbor);
+                    queue.add(neighbor);//adds elements to queue in bfs order
                 }
             }
         }
+        System.out.println(queue);
     }
     public void search(Vertex start, Vertex destination) {
         Set<Vertex> visited = new HashSet<>();
@@ -110,12 +111,12 @@ public class MyGraph<Vertex> {
         queue.add(start);
         Vertex found = null;
         while (!queue.isEmpty()) {
-            Vertex current = queue.poll();
-            if (current.equals(destination)) {
+            Vertex current = queue.poll();//checks all vertices until queue is empty or destination is found
+            if (current.equals(destination)) {//self-explanatory
                 found = current;
             }
             List<Vertex> neighbors = list.getOrDefault(current, Collections.emptyList());
-            for (Vertex neighbor : neighbors) {
+            for (Vertex neighbor : neighbors) {//makes sure that the process ends when destination is found
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.add(neighbor);
@@ -125,38 +126,36 @@ public class MyGraph<Vertex> {
         System.out.println(found + " found");
     }
     public Map<Vertex, Double> dijkstra(Vertex start) {
-        Map<Vertex, Double> distances = new HashMap<>();
+        Map<Vertex, Double> distances = new HashMap<>(); // creates a map to store the distances from the start vertex to each vertex in the graph
         for (Vertex node : list.keySet()) {
             distances.put(node, Double.MAX_VALUE);
         }
         distances.put(start, 0d);
 
         PriorityQueue<Vertex> queue = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
-        queue.add(start);
-
+        queue.add(start);// creates a priority queue to store the vertices based on their distances
         while (!queue.isEmpty()) {
-            Vertex currentVertex = queue.poll();
-
-            List<Vertex> neighbors = list.get(currentVertex);
+            Vertex currentVertex = queue.poll(); // extracts vertex with the smallest distance from queue
+            List<Vertex> neighbors = list.get(currentVertex);// gets neighbors of the current vertex
             if (neighbors == null) {
                 continue;
             }
-
-            for (Vertex neighbor : neighbors) {
-                Double currentDistance = distances.get(currentVertex);
+            for (Vertex neighbor : neighbors) {// iterates over  neighbors of  current vertex
+                Double currentDistance = distances.get(currentVertex);//gets the current distance from the start vertex to the neighbor
                 if (currentDistance == null) {
                     continue;
                 }
-                double distance = currentDistance + 1;
+                double distance = currentDistance + 1;// calculates the new distance from the start vertex to the neighbor
                 Double neighborDistance = distances.get(neighbor);
-                if (neighborDistance == null || distance < neighborDistance) {
+                if (neighborDistance == null || distance < neighborDistance) {// updates the distance if the new distance is smaller than the current recorded distance
+
                     distances.put(neighbor, distance);
                     queue.add(neighbor);
                 }
             }
         }
 
-        return distances;
+        return distances;//returns all distances
     }
 
 }
